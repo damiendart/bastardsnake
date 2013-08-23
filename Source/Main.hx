@@ -7,6 +7,7 @@ import flash.Lib.getTimer;
 
 class Main extends Sprite {
   private var _accumulated_time:Int;
+  private var _current_game_state:IGameState;
   private var _current_time:Int;
 
   public function new() {
