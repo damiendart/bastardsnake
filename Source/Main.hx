@@ -20,6 +20,8 @@ class Main extends Sprite {
     this._current_time = getTimer();
     stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
+    _current_game_state = new TestState();
+    this.addChild(cast(_current_game_state, Sprite));
   }
 
   private function _onEnterFrame(event:Event):Void {
@@ -28,13 +30,13 @@ class Main extends Sprite {
     this._current_time = new_time;
     this._accumulated_time += (dt > 100) ? 100 : dt;
     while (this._accumulated_time >= 10) {
-      /* ... */
+      _current_game_state.update(10);
       this._accumulated_time -= 10;
     }
-    /* ... */
+    _current_game_state.draw(_accumulated_time / 10);
   }
 
   private function _onKeyDown(event:KeyboardEvent):Void {
-    /* ... */
+    _current_game_state.onKeyDown(event);
   }
 }
