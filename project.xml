@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-  <meta name="Bastard Snake" package="net.robotinaponcho.bastardsnake" version="0.1.0"/>
   <app file="bastardsnake" main="Main" path="Export"/>
-  <source path="Source"/>
-  <haxelib name="openfl"/>
   <assets exclude="openfl.svg" path="Assets" rename="assets"/>
+  <haxelib name="openfl"/>
   <icon path="Assets/openfl.svg"/>
+  <meta name="Bastard Snake" package="net.robotinaponcho.bastardsnake" version="0.1.0"/>
+  <source path="Source"/>
 </project>
