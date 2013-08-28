@@ -7,13 +7,13 @@ import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 
 class TestState extends Sprite implements IGameState {
+  public function draw(alpha:Float):Void {
+    /* ... */
+  }
+
   public function new() {
     super();
     this.addEventListener(Event.ADDED_TO_STAGE, this._onAddedToStage);
-  }
-
-  public function draw(alpha:Float):Void {
-    /* ... */
   }
 
   public function onKeyDown(event:KeyboardEvent):Void {
