@@ -22,8 +22,8 @@ class Main extends Sprite {
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
     this.addEventListener(ChangeGameStateEvent.CHANGE_GAME_STATE,
         this._onGameStateChange);
-    _current_game_state = new TestState();
-    this.addChild(cast(_current_game_state, Sprite));
+    this._current_game_state = new TestState();
+    this.addChild(cast(this._current_game_state, Sprite));
   }
 
   private function _onGameStateChange(event:ChangeGameStateEvent):Void {
@@ -38,13 +38,13 @@ class Main extends Sprite {
     this._current_time = new_time;
     this._accumulated_time += (dt > 100) ? 100 : dt;
     while (this._accumulated_time >= 10) {
-      _current_game_state.update(10);
+      this._current_game_state.update(10);
       this._accumulated_time -= 10;
     }
-    _current_game_state.draw(_accumulated_time / 10);
+    this._current_game_state.draw(_accumulated_time / 10);
   }
 
   private function _onKeyDown(event:KeyboardEvent):Void {
-    _current_game_state.onKeyDown(event);
+    this._current_game_state.onKeyDown(event);
   }
 }
