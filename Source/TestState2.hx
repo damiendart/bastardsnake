@@ -6,7 +6,7 @@ import flash.events.KeyboardEvent;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 
-class TestState extends Sprite implements IGameState {
+class TestState2 extends Sprite implements IGameState {
   public function draw(alpha:Float):Void {
     /* ... */
   }
@@ -17,8 +17,7 @@ class TestState extends Sprite implements IGameState {
   }
 
   public function onKeyDown(event:KeyboardEvent):Void {
-    this.dispatchEvent(new ChangeGameStateEvent(
-        ChangeGameStateEvent.CHANGE_GAME_STATE, new TestState2()));
+    /* ... */
   }
 
   public function update(dt:Int):Void {
@@ -29,7 +28,7 @@ class TestState extends Sprite implements IGameState {
     var hello_world:TextField = new TextField();
     hello_world.autoSize = TextFieldAutoSize.LEFT;
     hello_world.selectable = false;
-    hello_world.text = "Hello, World! Press any key!";
+    hello_world.text = "WORD, SON.";
     this.addChild(hello_world);
   }
 }

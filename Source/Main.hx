@@ -20,8 +20,16 @@ class Main extends Sprite {
     this._current_time = getTimer();
     stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
+    this.addEventListener(ChangeGameStateEvent.CHANGE_GAME_STATE,
+        this._onGameStateChange);
     _current_game_state = new TestState();
     this.addChild(cast(_current_game_state, Sprite));
+  }
+
+  private function _onGameStateChange(event:ChangeGameStateEvent):Void {
+    this.removeChild(cast(this._current_game_state, Sprite));
+    this._current_game_state = event.getGameState();
+    this.addChild(cast(this._current_game_state, Sprite));
   }
 
   private function _onEnterFrame(event:Event):Void {
