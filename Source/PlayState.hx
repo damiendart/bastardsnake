@@ -6,7 +6,7 @@ import flash.events.KeyboardEvent;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 
-class TestState2 extends Sprite implements IGameState {
+class PlayState extends Sprite implements IGameState {
   public function draw(alpha:Float):Void {
     /* ... */
   }

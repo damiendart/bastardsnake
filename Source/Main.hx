@@ -22,7 +22,7 @@ class Main extends Sprite {
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
     this.addEventListener(ChangeGameStateEvent.CHANGE_GAME_STATE,
         this._onGameStateChange);
-    this._current_game_state = new TestState();
+    this._current_game_state = new MenuState();
     this.addChild(cast(this._current_game_state, Sprite));
   }
 
