@@ -19,7 +19,7 @@ class PlayState extends Sprite implements IGameState {
 
   public function draw(alpha:Float):Void {
     this.graphics.clear();
-    this.graphics.beginFill(0x000000);
+    this.graphics.beginFill(0x0000ff);
     this.graphics.drawRect(0, 0, 800, 600);
     for (part in this._snake_parts) {
       this.graphics.beginFill(0xffffff);
@@ -103,8 +103,8 @@ class PlayState extends Sprite implements IGameState {
 
   private function _placeFruit():Void {
     this._fruit = { x: Math.floor(Math.random() *
-        this._arena_dimensions.width - 1), y: Math.floor(Math.random() *
-        this._arena_dimensions.height - 1) };
+        this._arena_dimensions.width), y: Math.floor(Math.random() *
+        this._arena_dimensions.height) };
     for (part in this._snake_parts) {
       if ((this._fruit.x == part.x) && (this._fruit.y == part.y)) {
         this._placeFruit();
