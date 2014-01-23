@@ -16,9 +16,12 @@ class Main extends Sprite {
   }
 
   private function _onAddedToStage(event:Event):Void {
+    #if flash
+      untyped this.stage.align = "";
+    #end
     this._accumulated_time = 0;
     this._current_time = getTimer();
-    stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
+    this.stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
     this.addEventListener(ChangeGameStateEvent.CHANGE_GAME_STATE,
         this._onGameStateChange);

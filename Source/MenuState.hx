@@ -29,7 +29,7 @@ class MenuState extends Sprite implements IGameState {
   private function _onAddedToStage(event:Event):Void {
     var welcome_text:TextField = new TextField();
     welcome_text.autoSize = TextFieldAutoSize.LEFT;
-    welcome_text.defaultTextFormat = new TextFormat("Courier", 18);
+    welcome_text.defaultTextFormat = new TextFormat("Courier", 18, 0xffffff);
     welcome_text.selectable = false;
     welcome_text.text = "Welcome to Bastard Snake.\nPress any key to play.";
     welcome_text.x = 10;
