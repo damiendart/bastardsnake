@@ -1,16 +1,20 @@
 package;
 
+
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.Lib.getTimer;
 
-class Main extends Sprite implements IGameStateManager {
+
+class Main extends Sprite implements IGameStateManager
+{
   private var _accumulated_time:Int;
   private var _current_game_state:IGameState;
   private var _current_time:Int;
 
-  public function changeGameState(game_state:IGameState):Void {
+  public function changeGameState(game_state:IGameState):Void
+  {
     if (this._current_game_state != null) {
       this.removeChild(this._current_game_state.getDisplayObject());
     }
@@ -19,7 +23,8 @@ class Main extends Sprite implements IGameStateManager {
     this.addChild(this._current_game_state.getDisplayObject());
   }
 
-  public function new() {
+  public function new()
+  {
     super();
     this._accumulated_time = 0;
     this._current_time = getTimer();
@@ -28,7 +33,8 @@ class Main extends Sprite implements IGameStateManager {
 
   // In Flash, "DisplayObject"s use the "Event.ADDED_TO_STAGE" event to
   // ensure that the Stage object is accessible before using it.
-  private function _onAddedToStage(event:Event):Void {
+  private function _onAddedToStage(event:Event):Void
+  {
     // HACK: In ActionScript/Flash, the stage can be centered by setting
     // the "Stage.align" property to an empty string.
     #if flash
@@ -39,7 +45,8 @@ class Main extends Sprite implements IGameStateManager {
     this.changeGameState(new MenuState());
   }
 
-  private function _onEnterFrame(event:Event):Void {
+  private function _onEnterFrame(event:Event):Void
+  {
     var new_time:Int = getTimer();
     var dt:Int = new_time - _current_time;
     this._current_time = new_time;
@@ -54,7 +61,8 @@ class Main extends Sprite implements IGameStateManager {
     this._current_game_state.draw(_accumulated_time / 10);
   }
 
-  private function _onKeyDown(event:KeyboardEvent):Void {
+  private function _onKeyDown(event:KeyboardEvent):Void
+  {
     this._current_game_state.onKeyDown(event);
   }
 }

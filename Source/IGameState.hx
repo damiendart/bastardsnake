@@ -1,9 +1,12 @@
 package;
 
+
 import flash.display.DisplayObject;
 import flash.events.KeyboardEvent;
 
-interface IGameState {
+
+interface IGameState
+{
   function draw(alpha:Float):Void;
   function getDisplayObject():DisplayObject;
   function onKeyDown(event:KeyboardEvent):Void;

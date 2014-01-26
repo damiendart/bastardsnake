@@ -1,14 +1,18 @@
 package;
 
+
 import flash.display.Sprite;
 import flash.events.KeyboardEvent;
 import flash.text.TextField;
 import flash.text.TextFieldAutoSize;
 import flash.ui.Keyboard;
 
+
 enum SnakeDirection { UP; RIGHT; DOWN; LEFT; }
 
-class PlayState implements IGameState {
+
+class PlayState implements IGameState
+{
   private var _arena_dimensions:{ height: Int, width: Int };
   private var _display_object:Sprite;
   private var _fruit:{ x: Int, y: Int };
@@ -18,7 +22,8 @@ class PlayState implements IGameState {
   private var _snake_direction:SnakeDirection;
   private var _snake_parts:Array<{ x: Int, y: Int }>;
 
-  public function draw(alpha:Float):Void {
+  public function draw(alpha:Float):Void
+  {
     this._display_object.graphics.clear();
     this._display_object.graphics.beginFill(0x0000ff);
     this._display_object.graphics.drawRect(0, 0, 800, 600);
@@ -38,16 +43,19 @@ class PlayState implements IGameState {
         (600 / this._arena_dimensions.height));
   }
 
-  public function getDisplayObject():Sprite {
+  public function getDisplayObject():Sprite
+  {
     return this._display_object;
   }
 
-  public function new() {
+  public function new()
+  {
     this._display_object = new Sprite();
     this._resetGame();
   }
 
-  public function onKeyDown(event:KeyboardEvent):Void {
+  public function onKeyDown(event:KeyboardEvent):Void
+  {
     switch (event.keyCode) {
       case Keyboard.UP:
         // Prevent players from going back on themselves.
@@ -72,11 +80,13 @@ class PlayState implements IGameState {
     }
   }
 
-  public function registerManager(manager:IGameStateManager):Void {
+  public function registerManager(manager:IGameStateManager):Void
+  {
     this._game_state_manager = manager;
   }
 
-  public function update(dt:Int):Void {
+  public function update(dt:Int):Void
+  {
     if (this._is_snake_alive == true) {
       var next_move = (this._snake_parts.length < 15) ?
           (100 - this._snake_parts.length * 5) : 20;
@@ -121,7 +131,8 @@ class PlayState implements IGameState {
     }
   }
 
-  private function _placeFruit():Void {
+  private function _placeFruit():Void
+  {
     this._fruit = { x: Math.floor(Math.random() *
         this._arena_dimensions.width), y: Math.floor(Math.random() *
         this._arena_dimensions.height) };
@@ -132,7 +143,8 @@ class PlayState implements IGameState {
     }
   }
 
-  private function _resetGame():Void {
+  private function _resetGame():Void
+  {
     this._arena_dimensions = { height: 24, width: 32 };
     this._is_snake_alive = true;
     this._snake_direction = SnakeDirection.DOWN;
