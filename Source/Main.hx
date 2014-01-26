@@ -5,10 +5,17 @@ import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.Lib.getTimer;
 
-class Main extends Sprite {
+class Main extends Sprite implements IGameStateManager {
   private var _accumulated_time:Int;
   private var _current_game_state:IGameState;
   private var _current_time:Int;
+
+  public function changeGameState(game_state:IGameState):Void {
+    this.removeChild(this._current_game_state.getDisplayObject());
+    this._current_game_state = game_state;
+    this._current_game_state.registerManager(this);
+    this.addChild(this._current_game_state.getDisplayObject());
+  }
 
   public function new() {
     super();
@@ -23,16 +30,9 @@ class Main extends Sprite {
     this._current_time = getTimer();
     this.stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
-    this.addEventListener(ChangeGameStateEvent.CHANGE_GAME_STATE,
-        this._onGameStateChange);
     this._current_game_state = new MenuState();
-    this.addChild(cast(this._current_game_state, Sprite));
-  }
-
-  private function _onGameStateChange(event:ChangeGameStateEvent):Void {
-    this.removeChild(cast(this._current_game_state, Sprite));
-    this._current_game_state = event.getGameState();
-    this.addChild(cast(this._current_game_state, Sprite));
+    this._current_game_state.registerManager(this);
+    this.addChild(this._current_game_state.getDisplayObject());
   }
 
   private function _onEnterFrame(event:Event):Void {
