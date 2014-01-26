@@ -11,7 +11,9 @@ class Main extends Sprite implements IGameStateManager {
   private var _current_time:Int;
 
   public function changeGameState(game_state:IGameState):Void {
-    this.removeChild(this._current_game_state.getDisplayObject());
+    if (this._current_game_state != null) {
+      this.removeChild(this._current_game_state.getDisplayObject());
+    }
     this._current_game_state = game_state;
     this._current_game_state.registerManager(this);
     this.addChild(this._current_game_state.getDisplayObject());
@@ -19,26 +21,31 @@ class Main extends Sprite implements IGameStateManager {
 
   public function new() {
     super();
+    this._accumulated_time = 0;
+    this._current_time = getTimer();
     this.addEventListener(Event.ADDED_TO_STAGE, this._onAddedToStage);
   }
 
+  // In Flash, "DisplayObject"s use the "Event.ADDED_TO_STAGE" event to
+  // ensure that the Stage object is accessible before using it.
   private function _onAddedToStage(event:Event):Void {
+    // HACK: In ActionScript/Flash, the stage can be centered by setting
+    // the "Stage.align" property to an empty string.
     #if flash
       untyped this.stage.align = "";
     #end
-    this._accumulated_time = 0;
-    this._current_time = getTimer();
-    this.stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
-    this._current_game_state = new MenuState();
-    this._current_game_state.registerManager(this);
-    this.addChild(this._current_game_state.getDisplayObject());
+    this.stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
+    this.changeGameState(new MenuState());
   }
 
   private function _onEnterFrame(event:Event):Void {
     var new_time:Int = getTimer();
     var dt:Int = new_time - _current_time;
     this._current_time = new_time;
+    // Clamp "dt" to prevent the spiral of death that may occur if
+    // updating game-states start taking too long. For more information,
+    // see <http://gafferongames.com/game-physics/fix-your-timestep/>.
     this._accumulated_time += (dt > 100) ? 100 : dt;
     while (this._accumulated_time >= 10) {
       this._current_game_state.update(10);
