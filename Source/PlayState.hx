@@ -43,20 +43,38 @@ class PlayState extends Sprite implements IGameState {
 
   public function onKeyDown(event:KeyboardEvent):Void {
     switch (event.keyCode) {
-      case Keyboard.UP: this._snake_direction = SnakeDirection.UP;
-      case Keyboard.RIGHT: this._snake_direction = SnakeDirection.RIGHT;
-      case Keyboard.DOWN: this._snake_direction = SnakeDirection.DOWN;
-      case Keyboard.LEFT: this._snake_direction = SnakeDirection.LEFT;
+      case Keyboard.UP:
+        // Prevent players from going back on themselves.
+        if (this._snake_direction != SnakeDirection.DOWN) {
+          this._snake_direction = SnakeDirection.UP;
+        }
+      case Keyboard.RIGHT:
+        // Prevent players from going back on themselves.
+        if (this._snake_direction != SnakeDirection.LEFT) {
+          this._snake_direction = SnakeDirection.RIGHT;
+        }
+      case Keyboard.DOWN:
+        // Prevent players from going back on themselves.
+        if (this._snake_direction != SnakeDirection.UP) {
+          this._snake_direction = SnakeDirection.DOWN;
+        }
+      case Keyboard.LEFT:
+        // Prevent players from going back on themselves.
+        if (this._snake_direction != SnakeDirection.RIGHT) {
+          this._snake_direction = SnakeDirection.LEFT;
+        }
     }
   }
 
   public function update(dt:Int):Void {
-    if (_is_snake_alive == true) {
+    if (this._is_snake_alive == true) {
+      var next_move = (this._snake_parts.length < 15) ?
+          (100 - this._snake_parts.length * 5) : 20;
       this._snake_accumulated_time += dt;
-      while (this._snake_accumulated_time >= 100) {
-        this._snake_accumulated_time -= 100;
+      while (this._snake_accumulated_time >= next_move) {
         var snake_head = this._snake_parts[this._snake_parts.length - 1];
-        switch (_snake_direction) {
+        this._snake_accumulated_time -= next_move;
+        switch (this._snake_direction) {
           case SnakeDirection.UP:
             this._snake_parts.push({ x: snake_head.x, y: snake_head.y - 1 });
           case SnakeDirection.RIGHT:
@@ -66,7 +84,7 @@ class PlayState extends Sprite implements IGameState {
           case SnakeDirection.LEFT:
             this._snake_parts.push({ x: snake_head.x - 1, y: snake_head.y });
         }
-        var snake_head = this._snake_parts[this._snake_parts.length - 1];
+        snake_head = this._snake_parts[this._snake_parts.length - 1];
         if ((snake_head.x >= this._arena_dimensions.width) ||
             (snake_head.y >= this._arena_dimensions.height) ||
             (snake_head.x < 0) || (snake_head.y < 0)) {

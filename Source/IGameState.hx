@@ -1,5 +1,6 @@
 package;
 
+import flash.display.DisplayObject;
 import flash.events.KeyboardEvent;
 
 interface IGameState {
