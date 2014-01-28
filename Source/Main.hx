@@ -7,26 +7,17 @@ import flash.events.KeyboardEvent;
 import flash.Lib.getTimer;
 
 
-class Main extends Sprite implements IGameStateManager
+class Main extends Sprite
 {
   private var _accumulated_time:Int;
-  private var _current_game_state:IGameState;
+  private var _game_state_manager:BasicGameStateManager;
   private var _current_time:Int;
-
-  public function changeGameState(game_state:IGameState):Void
-  {
-    if (this._current_game_state != null) {
-      this.removeChild(this._current_game_state.getDisplayObject());
-    }
-    this._current_game_state = game_state;
-    this._current_game_state.registerManager(this);
-    this.addChild(this._current_game_state.getDisplayObject());
-  }
 
   public function new()
   {
     super();
     this._accumulated_time = 0;
+    this._game_state_manager = new BasicGameStateManager();
     this._current_time = getTimer();
     this.addEventListener(Event.ADDED_TO_STAGE, this._onAddedToStage);
   }
@@ -42,7 +33,8 @@ class Main extends Sprite implements IGameStateManager
     #end
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
     this.stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
-    this.changeGameState(new MenuState());
+    this._game_state_manager.changeGameState(new MenuState());
+    this.addChild(this._game_state_manager.getDisplayObject());
   }
 
   private function _onEnterFrame(event:Event):Void
@@ -55,14 +47,14 @@ class Main extends Sprite implements IGameStateManager
     // see <http://gafferongames.com/game-physics/fix-your-timestep/>.
     this._accumulated_time += (dt > 100) ? 100 : dt;
     while (this._accumulated_time >= 10) {
-      this._current_game_state.update(10);
+      this._game_state_manager.getCurrentGameState().update(10);
       this._accumulated_time -= 10;
     }
-    this._current_game_state.draw(_accumulated_time / 10);
+    this._game_state_manager.getCurrentGameState().draw(_accumulated_time / 10);
   }
 
   private function _onKeyDown(event:KeyboardEvent):Void
   {
-    this._current_game_state.onKeyDown(event);
+    this._game_state_manager.getCurrentGameState().onKeyDown(event);
   }
 }
