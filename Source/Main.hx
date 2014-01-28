@@ -43,18 +43,18 @@ class Main extends Sprite
     var dt:Int = new_time - _current_time;
     this._current_time = new_time;
     // Clamp "dt" to prevent the spiral of death that may occur if
-    // updating game-states start taking too long. For more information,
-    // see <http://gafferongames.com/game-physics/fix-your-timestep/>.
+    // updating start taking too long. For more information, see
+    // <http://gafferongames.com/game-physics/fix-your-timestep/>.
     this._accumulated_time += (dt > 100) ? 100 : dt;
     while (this._accumulated_time >= 10) {
-      this._game_state_manager.getCurrentGameState().update(10);
+      this._game_state_manager.update(10);
       this._accumulated_time -= 10;
     }
-    this._game_state_manager.getCurrentGameState().draw(_accumulated_time / 10);
+    this._game_state_manager.draw(_accumulated_time / 10);
   }
 
   private function _onKeyDown(event:KeyboardEvent):Void
   {
-    this._game_state_manager.getCurrentGameState().onKeyDown(event);
+    this._game_state_manager.onKeyDown(event);
   }
 }
