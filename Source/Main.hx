@@ -28,6 +28,7 @@ class Main extends Sprite
   {
     // HACK: In ActionScript/Flash, the stage can be centered by setting
     // the "Stage.align" property to an empty string.
+    // TODO: Check if this hack works in other targets.
     #if flash
       untyped this.stage.align = "";
     #end

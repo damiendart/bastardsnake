@@ -16,8 +16,8 @@ typedef Snake = { accumulated_time:Int, is_alive:Bool,
     direction:SnakeDirection, parts:Array<Cell> };
 
 
-class PlayState implements IGameState implements IDrawable
-    implements IUpdatable implements IInteractable
+class PlayState implements IDrawable implements IGameState
+    implements IInteractable implements IUpdatable
 {
   private var _arena_dimensions:Grid;
   private var _display_object:Sprite;

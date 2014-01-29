@@ -5,8 +5,8 @@ import flash.display.Sprite;
 import flash.events.KeyboardEvent;
 
 
-class BasicGameStateManager implements IGameStateManager implements IDrawable
-    implements IUpdatable implements IInteractable
+class BasicGameStateManager implements IDrawable implements IGameStateManager
+    implements IInteractable implements IUpdatable
 {
   private var _current_game_state:IGameState;
   private var _display_object:Sprite;
@@ -41,17 +41,20 @@ class BasicGameStateManager implements IGameStateManager implements IDrawable
     return this._display_object;
   }
 
-  public function new() {
+  public function new()
+  {
     this._display_object = new Sprite();
   }
 
-  public function onKeyDown(event:KeyboardEvent):Void {
+  public function onKeyDown(event:KeyboardEvent):Void
+  {
     if (Std.is(this._current_game_state, IInteractable)) {
       cast(this._current_game_state, IInteractable).onKeyDown(event);
     }
   }
 
-  public function update(dt:Int):Void {
+  public function update(dt:Int):Void
+  {
     if (Std.is(this._current_game_state, IUpdatable)) {
       cast(this._current_game_state, IUpdatable).update(dt);
     }

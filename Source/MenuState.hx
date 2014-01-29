@@ -8,8 +8,8 @@ import flash.text.TextFieldAutoSize;
 import flash.text.TextFormat;
 
 
-class MenuState implements IGameState implements IDrawable 
-    implements IUpdatable implements IInteractable
+class MenuState implements IDrawable implements IGameState
+    implements IInteractable implements IUpdatable
 {
   private var _display_object:Sprite;
   private var _game_state_manager:IGameStateManager;
