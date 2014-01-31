@@ -20,26 +20,27 @@ class PlayState implements IDrawable implements IGameState
     implements IInteractable implements IUpdatable
 {
   private var _arena_dimensions:Grid;
+  private var _background_manager:BasicGameStateManager;
   private var _display_object:Sprite;
   private var _fruit:Cell;
+  private var _game_display_object:Sprite;
   private var _parent:IGameStateManager;
   private var _snake:Snake;
 
   public function draw(alpha:Float):Void
   {
-    this._display_object.graphics.clear();
-    this._display_object.graphics.beginFill(0x0000ff);
-    this._display_object.graphics.drawRect(0, 0, 800, 600);
+    this._background_manager.draw(alpha);
+    this._game_display_object.graphics.clear();
     for (part in this._snake.parts) {
-      this._display_object.graphics.beginFill(0xffffff);
-      this._display_object.graphics.drawRect(
+      this._game_display_object.graphics.beginFill(0xffffff);
+      this._game_display_object.graphics.drawRect(
           part.x * (800 / this._arena_dimensions.width),
           part.y * (600 / this._arena_dimensions.height),
           (800 / this._arena_dimensions.width),
           (600 / this._arena_dimensions.height));
     }
-    this._display_object.graphics.beginFill(0xff0000);
-    this._display_object.graphics.drawRect(
+    this._game_display_object.graphics.beginFill(0xff0000);
+    this._game_display_object.graphics.drawRect(
         this._fruit.x * (800 / this._arena_dimensions.width),
         this._fruit.y * (600 / this._arena_dimensions.height),
         (800 / this._arena_dimensions.width),
@@ -53,12 +54,15 @@ class PlayState implements IDrawable implements IGameState
 
   public function new()
   {
+    this._background_manager = new BasicGameStateManager();
     this._display_object = new Sprite();
+    this._game_display_object = new Sprite();
     this._resetGame();
   }
 
   public function onKeyDown(event:KeyboardEvent):Void
   {
+    this._background_manager.onKeyDown(event);
     switch (event.keyCode) {
       case Keyboard.UP:
         // Prevent players from going back on themselves.
@@ -90,6 +94,7 @@ class PlayState implements IDrawable implements IGameState
 
   public function update(dt:Int):Void
   {
+    this._background_manager.update(dt);
     if (this._snake.is_alive == true) {
       var next_move = (this._snake.parts.length < 15) ?
           (100 - this._snake.parts.length * 5) : 20;
@@ -152,6 +157,10 @@ class PlayState implements IDrawable implements IGameState
     this._snake = { accumulated_time: 0, is_alive: true,
         direction: SnakeDirection.DOWN,
         parts: [{ x: 2, y: 2 }, { x: 2, y: 3 }] };
+    this._background_manager.changeGameState(
+        new BasicBackgroundState(0x0000ff));
+    this._display_object.addChild(this._background_manager.getDisplayObject());
+    this._display_object.addChild(this._game_display_object);
     this._placeFruit();
   }
 }
