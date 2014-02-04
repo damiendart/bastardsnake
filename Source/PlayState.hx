@@ -96,8 +96,8 @@ class PlayState implements IDrawable implements IGameState
   {
     this._background_manager.update(dt);
     if (this._snake.is_alive == true) {
-      var next_move = (this._snake.parts.length < 15) ?
-          (100 - this._snake.parts.length * 5) : 20;
+      var next_move = (this._snake.parts.length < 12) ?
+          (100 - this._snake.parts.length * 5) : 40;
       this._snake.accumulated_time += dt;
       while (this._snake.accumulated_time >= next_move) {
         var snake_head = this._snake.parts[this._snake.parts.length - 1];
