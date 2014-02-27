@@ -4,6 +4,7 @@ package;
 import flash.display.Sprite;
 import flash.events.KeyboardEvent;
 import flash.text.TextField;
+import flash.text.TextFormat;
 import flash.text.TextFieldAutoSize;
 import flash.ui.Keyboard;
 
@@ -21,8 +22,10 @@ class PlayState implements IDrawable implements IGameState
   private var _background_manager:BasicGameStateManager;
   private var _fruit:Cell;
   private var _game_display_object:Sprite;
+  private var _hud_text:TextField;
   private var _main_display_object:Sprite;
   private var _parent:IGameStateManager;
+  private var _score:Int;
   private var _snake:{ accumulated_time:Int, is_alive:Bool,
     direction:SnakeDirection, parts:Array<Cell> };
 
@@ -31,9 +34,9 @@ class PlayState implements IDrawable implements IGameState
     this._background_manager.draw(alpha);
     this._game_display_object.graphics.clear();
     for (part in this._snake.parts) {
-      this._drawCell(part, 0xffffff);
+      this._drawCell(part, this._snake.is_alive ? 0xffffff : 0xff0000);
     }
-    this._drawCell(this._fruit, 0xff0000);
+    this._drawCell(this._fruit, 0xffffff);
   }
 
   public function getDisplayObject():Sprite
@@ -118,6 +121,8 @@ class PlayState implements IDrawable implements IGameState
         }
         if ((snake_head.x == this._fruit.x) &&
             (snake_head.y == this._fruit.y)) {
+          this._score++;
+          this._hud_text.text = "SCORE: " + this._score;
           this._placeFruit();
         } else {
           if (this._snake.is_alive == true) {
@@ -156,11 +161,20 @@ class PlayState implements IDrawable implements IGameState
     this._snake = { accumulated_time: 0, is_alive: true,
         direction: SnakeDirection.DOWN,
         parts: [{ x: 2, y: 2 }, { x: 2, y: 3 }] };
+    this._score = 0;
     this._background_manager.changeGameState(
         new BasicBackgroundState(0x0000ff));
     this._main_display_object.addChild(
         this._background_manager.getDisplayObject());
     this._main_display_object.addChild(this._game_display_object);
+    this._hud_text = new TextField();
+    this._hud_text.autoSize = TextFieldAutoSize.LEFT;
+    this._hud_text.defaultTextFormat = new TextFormat("Courier", 18, 0xffffff);
+    this._hud_text.selectable = false;
+    this._hud_text.text = "SCORE: " + this._score;
+    this._hud_text.x = 10;
+    this._hud_text.y = 10;
+    this._main_display_object.addChild(this._hud_text);
     this._placeFruit();
   }
 }
