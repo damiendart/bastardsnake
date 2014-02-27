@@ -12,51 +12,40 @@ enum SnakeDirection { UP; RIGHT; DOWN; LEFT; }
 
 typedef Grid = { height: Int, width: Int };
 typedef Cell = { x:Int, y:Int };
-typedef Snake = { accumulated_time:Int, is_alive:Bool,
-    direction:SnakeDirection, parts:Array<Cell> };
 
 
 class PlayState implements IDrawable implements IGameState
     implements IInteractable implements IUpdatable
 {
-  private var _arena_dimensions:Grid;
+  private var _arena:{ height: Int, width: Int };
   private var _background_manager:BasicGameStateManager;
-  private var _display_object:Sprite;
   private var _fruit:Cell;
   private var _game_display_object:Sprite;
+  private var _main_display_object:Sprite;
   private var _parent:IGameStateManager;
-  private var _snake:Snake;
+  private var _snake:{ accumulated_time:Int, is_alive:Bool,
+    direction:SnakeDirection, parts:Array<Cell> };
 
   public function draw(alpha:Float):Void
   {
     this._background_manager.draw(alpha);
     this._game_display_object.graphics.clear();
     for (part in this._snake.parts) {
-      this._game_display_object.graphics.beginFill(0xffffff);
-      this._game_display_object.graphics.drawRect(
-          part.x * (800 / this._arena_dimensions.width),
-          part.y * (600 / this._arena_dimensions.height),
-          (800 / this._arena_dimensions.width),
-          (600 / this._arena_dimensions.height));
+      this._drawCell(part, 0xffffff);
     }
-    this._game_display_object.graphics.beginFill(0xff0000);
-    this._game_display_object.graphics.drawRect(
-        this._fruit.x * (800 / this._arena_dimensions.width),
-        this._fruit.y * (600 / this._arena_dimensions.height),
-        (800 / this._arena_dimensions.width),
-        (600 / this._arena_dimensions.height));
+    this._drawCell(this._fruit, 0xff0000);
   }
 
   public function getDisplayObject():Sprite
   {
-    return this._display_object;
+    return this._main_display_object;
   }
 
   public function new()
   {
     this._background_manager = new BasicGameStateManager();
-    this._display_object = new Sprite();
     this._game_display_object = new Sprite();
+    this._main_display_object = new Sprite();
     this._resetGame();
   }
 
@@ -113,8 +102,8 @@ class PlayState implements IDrawable implements IGameState
             this._snake.parts.push({ x: snake_head.x - 1, y: snake_head.y });
         }
         snake_head = this._snake.parts[this._snake.parts.length - 1];
-        if ((snake_head.x >= this._arena_dimensions.width) ||
-            (snake_head.y >= this._arena_dimensions.height) ||
+        if ((snake_head.x >= this._arena.width) ||
+            (snake_head.y >= this._arena.height) ||
             (snake_head.x < 0) || (snake_head.y < 0)) {
           this._snake.is_alive = false;
           this._snake.parts.pop();
@@ -139,11 +128,21 @@ class PlayState implements IDrawable implements IGameState
     }
   }
 
+  private function _drawCell(cell:Cell, colour:Int):Void
+  {
+    this._game_display_object.graphics.beginFill(colour);
+    this._game_display_object.graphics.drawRect(
+        // TODO: Replace magic values.
+        cell.x * (800 / this._arena.width),
+        cell.y * (600 / this._arena.height),
+        800 / this._arena.width, 600 / this._arena.height);
+  }
+
   private function _placeFruit():Void
   {
     this._fruit = { x: Math.floor(Math.random() *
-        this._arena_dimensions.width), y: Math.floor(Math.random() *
-        this._arena_dimensions.height) };
+        this._arena.width), y: Math.floor(Math.random() *
+        this._arena.height) };
     for (part in this._snake.parts) {
       if ((this._fruit.x == part.x) && (this._fruit.y == part.y)) {
         this._placeFruit();
@@ -153,14 +152,15 @@ class PlayState implements IDrawable implements IGameState
 
   private function _resetGame():Void
   {
-    this._arena_dimensions = { height: 24, width: 32 };
+    this._arena = { height: 24, width: 32 };
     this._snake = { accumulated_time: 0, is_alive: true,
         direction: SnakeDirection.DOWN,
         parts: [{ x: 2, y: 2 }, { x: 2, y: 3 }] };
     this._background_manager.changeGameState(
         new BasicBackgroundState(0x0000ff));
-    this._display_object.addChild(this._background_manager.getDisplayObject());
-    this._display_object.addChild(this._game_display_object);
+    this._main_display_object.addChild(
+        this._background_manager.getDisplayObject());
+    this._main_display_object.addChild(this._game_display_object);
     this._placeFruit();
   }
 }
