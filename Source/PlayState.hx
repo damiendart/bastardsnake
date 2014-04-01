@@ -26,7 +26,7 @@ class PlayState implements IDrawable implements IGameState
   private var _main_display_object:Sprite;
   private var _parent:IGameStateManager;
   private var _snake:{ accumulated_time:Int, is_alive:Bool,
-    direction:SnakeDirection, parts:Array<Cell> };
+    direction:SnakeDirection, parts:Array<Cell>, reversed_controls:Bool };
 
   public function draw(alpha:Float):Void
   {
@@ -58,22 +58,38 @@ class PlayState implements IDrawable implements IGameState
       case Keyboard.UP:
         // Prevent players from going back on themselves.
         if (this._snake.direction != SnakeDirection.DOWN) {
-          this._snake.direction = SnakeDirection.UP;
+          if (this._snake.reversed_controls) {
+            this._snake.direction = SnakeDirection.DOWN;
+          } else {
+            this._snake.direction = SnakeDirection.UP;
+          }
         }
       case Keyboard.RIGHT:
         // Prevent players from going back on themselves.
         if (this._snake.direction != SnakeDirection.LEFT) {
-          this._snake.direction = SnakeDirection.RIGHT;
+          if (this._snake.reversed_controls) {
+            this._snake.direction = SnakeDirection.LEFT;
+          } else {
+            this._snake.direction = SnakeDirection.RIGHT;
+          }
         }
       case Keyboard.DOWN:
         // Prevent players from going back on themselves.
         if (this._snake.direction != SnakeDirection.UP) {
-          this._snake.direction = SnakeDirection.DOWN;
+          if (this._snake.reversed_controls) {
+            this._snake.direction = SnakeDirection.UP;
+          } else {
+            this._snake.direction = SnakeDirection.DOWN;
+          }
         }
       case Keyboard.LEFT:
         // Prevent players from going back on themselves.
         if (this._snake.direction != SnakeDirection.RIGHT) {
-          this._snake.direction = SnakeDirection.LEFT;
+          if (this._snake.reversed_controls) {
+            this._snake.direction = SnakeDirection.RIGHT;
+          } else {
+            this._snake.direction = SnakeDirection.LEFT;
+          }
         }
     }
   }
@@ -120,7 +136,9 @@ class PlayState implements IDrawable implements IGameState
         }
         if ((snake_head.x == this._fruit.x) &&
             (snake_head.y == this._fruit.y)) {
-          this._hud_text.text = "SCORE: " + (this._snake.parts.length - 2);
+          this._snake.reversed_controls = !this._snake.reversed_controls;
+          this._hud_text.text = "SCORE: " + (this._snake.parts.length - 2) +
+              "\nControls: " + (this._snake.reversed_controls ? "REVERSED" : "NORMAL");
           this._placeFruit();
         } else {
           if (this._snake.is_alive == true) {
@@ -158,7 +176,8 @@ class PlayState implements IDrawable implements IGameState
     this._arena = { height: 24, width: 32 };
     this._snake = { accumulated_time: 0, is_alive: true,
         direction: SnakeDirection.DOWN,
-        parts: [{ x: 2, y: 2 }, { x: 2, y: 3 }] };
+        parts: [{ x: 2, y: 2 }, { x: 2, y: 3 }],
+        reversed_controls: false };
     this._background_manager.changeGameState(
         new BasicBackgroundState(0x0000ff));
     this._main_display_object.addChild(
