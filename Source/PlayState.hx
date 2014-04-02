@@ -56,11 +56,13 @@ class PlayState implements IDrawable implements IGameState
     this._background_manager.onKeyDown(event);
     switch (event.keyCode) {
       case Keyboard.UP:
-        // Prevent players from going back on themselves.
-        if (this._snake.direction != SnakeDirection.DOWN) {
-          if (this._snake.reversed_controls) {
+        if (this._snake.reversed_controls) {
+          // Prevent players from going back on themselves.
+          if (this._snake.direction != SnakeDirection.DOWN) {
             this._snake.direction = SnakeDirection.DOWN;
-          } else {
+          }
+        } else {
+          if (this._snake.direction != SnakeDirection.UP) {
             this._snake.direction = SnakeDirection.UP;
           }
         }
