@@ -58,38 +58,48 @@ class PlayState implements IDrawable implements IGameState
       case Keyboard.UP:
         if (this._snake.reversed_controls) {
           // Prevent players from going back on themselves.
-          if (this._snake.direction != SnakeDirection.DOWN) {
+          if (this._snake.direction != SnakeDirection.UP) {
             this._snake.direction = SnakeDirection.DOWN;
           }
         } else {
-          if (this._snake.direction != SnakeDirection.UP) {
+          // Prevent players from going back on themselves.
+          if (this._snake.direction != SnakeDirection.DOWN) {
             this._snake.direction = SnakeDirection.UP;
           }
         }
       case Keyboard.RIGHT:
-        // Prevent players from going back on themselves.
-        if (this._snake.direction != SnakeDirection.LEFT) {
-          if (this._snake.reversed_controls) {
+        if (this._snake.reversed_controls) {
+          // Prevent players from going back on themselves.
+          if (this._snake.direction != SnakeDirection.RIGHT) {
             this._snake.direction = SnakeDirection.LEFT;
-          } else {
+          }
+        } else {
+          // Prevent players from going back on themselves.
+          if (this._snake.direction != SnakeDirection.LEFT) {
             this._snake.direction = SnakeDirection.RIGHT;
           }
         }
       case Keyboard.DOWN:
-        // Prevent players from going back on themselves.
-        if (this._snake.direction != SnakeDirection.UP) {
-          if (this._snake.reversed_controls) {
+        if (this._snake.reversed_controls) {
+          // Prevent players from going back on themselves.
+          if (this._snake.direction != SnakeDirection.DOWN) {
             this._snake.direction = SnakeDirection.UP;
-          } else {
+          }
+        } else {
+          // Prevent players from going back on themselves.
+          if (this._snake.direction != SnakeDirection.UP) {
             this._snake.direction = SnakeDirection.DOWN;
           }
         }
       case Keyboard.LEFT:
-        // Prevent players from going back on themselves.
-        if (this._snake.direction != SnakeDirection.RIGHT) {
-          if (this._snake.reversed_controls) {
+        if (this._snake.reversed_controls) {
+          // Prevent players from going back on themselves.
+          if (this._snake.direction != SnakeDirection.LEFT) {
             this._snake.direction = SnakeDirection.RIGHT;
-          } else {
+          }
+        } else {
+          // Prevent players from going back on themselves.
+          if (this._snake.direction != SnakeDirection.RIGHT) {
             this._snake.direction = SnakeDirection.LEFT;
           }
         }
