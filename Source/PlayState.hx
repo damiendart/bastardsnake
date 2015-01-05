@@ -103,6 +103,10 @@ class PlayState implements IDrawable implements IGameState
             this._snake.direction = SnakeDirection.LEFT;
           }
         }
+      case Keyboard.SPACE:
+        if (this._snake.is_alive == false) {
+          this._parent.changeGameState(new PlayState());
+        }
     }
   }
 
