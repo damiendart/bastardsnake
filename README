@@ -1,4 +1,15 @@
 bastardsnake
 ============
 
-A Snake-clone with 73% more Bastardry.
+A snake clone that doesn't want you getting many points.
+
+bastardnake was made with [Haxe][1] and [OpenFL][2] I've only ever build
+the Flash version of the game, so other versions might be funky.
+
+This is one of those projects which I work on sporadically and without
+any particular goals in mind, so don't expect much.
+
+-- Damien
+
+[1]: <http://haxe.org/>
+[2]: <http://www.openfl.org/>
