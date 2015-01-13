@@ -152,9 +152,12 @@ class PlayState implements IDrawable implements IGameState
         }
         if ((snake_head.x == this._fruit.x) &&
             (snake_head.y == this._fruit.y)) {
-          this._snake.reversed_controls = !this._snake.reversed_controls;
+          this._hud_text.text = "SCORE: " + (this._snake.parts.length - 2);
+          if (Std.random(2) == 1) {
+            this._snake.reversed_controls = !this._snake.reversed_controls;
           this._hud_text.text = "SCORE: " + (this._snake.parts.length - 2) +
               "\nControls: " + (this._snake.reversed_controls ? "REVERSED" : "NORMAL");
+          }
           this._placeFruit();
         } else {
           if (this._snake.is_alive == true) {
