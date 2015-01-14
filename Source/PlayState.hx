@@ -25,7 +25,7 @@ class PlayState implements IDrawable implements IGameState
   private var _hud_text:TextField;
   private var _main_display_object:Sprite;
   private var _parent:IGameStateManager;
-  private var _snake:{ accumulated_time:Int, is_alive:Bool,
+  private var _snake:{ accumulated_time:Int, is_alive:Bool, has_reversed:Bool,
     direction:SnakeDirection, parts:Array<Cell>, reversed_controls:Bool };
 
   public function draw(alpha:Float):Void
@@ -152,11 +152,14 @@ class PlayState implements IDrawable implements IGameState
         }
         if ((snake_head.x == this._fruit.x) &&
             (snake_head.y == this._fruit.y)) {
-          this._hud_text.text = "SCORE: " + (this._snake.parts.length - 2);
           if (Std.random(2) == 1) {
             this._snake.reversed_controls = !this._snake.reversed_controls;
-          this._hud_text.text = "SCORE: " + (this._snake.parts.length - 2) +
-              "\nControls: " + (this._snake.reversed_controls ? "REVERSED" : "NORMAL");
+            this._snake.has_reversed = true;
+          }
+          this._hud_text.text = "SCORE: " + (this._snake.parts.length - 2);
+          if (this._snake.has_reversed) {
+            this._hud_text.text += "\nControls: " +
+                (this._snake.reversed_controls ? "REVERSED" : "NORMAL");
           }
           this._placeFruit();
         } else {
@@ -193,7 +196,7 @@ class PlayState implements IDrawable implements IGameState
   private function _resetGame():Void
   {
     this._arena = { height: 24, width: 32 };
-    this._snake = { accumulated_time: 0, is_alive: true,
+    this._snake = { accumulated_time: 0, is_alive: true, has_reversed: false,
         direction: SnakeDirection.DOWN,
         parts: [{ x: 2, y: 2 }, { x: 2, y: 3 }],
         reversed_controls: false };
