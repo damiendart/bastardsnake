@@ -33,7 +33,8 @@ class PlayState implements IDrawable implements IGameState
     this._background_manager.draw(alpha);
     this._game_display_object.graphics.clear();
     for (part in this._snake.parts) {
-      this._drawCell(part, this._snake.is_alive ? 0xffffff : 0xff0000);
+      this._drawCell(part, this._snake.is_alive ?
+          (this._snake.reversed_controls ? 0x000000 : 0xffffff): 0xff0000);
     }
     this._drawCell(this._fruit, 0xffffff);
   }
