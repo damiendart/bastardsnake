@@ -202,7 +202,7 @@ class PlayState implements IDrawable implements IGameState
         parts: [{ x: 2, y: 2 }, { x: 2, y: 3 }],
         reversed_controls: false };
     this._background_manager.changeGameState(
-        new BasicBackgroundState(0x0000ff));
+        new BasicBackgroundState(0x009900));
     this._main_display_object.addChild(
         this._background_manager.getDisplayObject());
     this._main_display_object.addChild(this._game_display_object);
