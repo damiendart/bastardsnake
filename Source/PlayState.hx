@@ -164,7 +164,7 @@ class PlayState implements IDrawable implements IGameState
             if (this._snake.reversed_controls) {
               this._background_manager.changeGameState(
             new KindaBokehBackgroundState(0x000000, 0x009900));
-            } else { 
+            } else {
               this._background_manager.changeGameState(new BasicBackgroundState(0x009900));
             }
           }

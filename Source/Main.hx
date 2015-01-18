@@ -27,7 +27,7 @@ class Main extends Sprite
   // ensure that the Stage object is accessible before using it.
   private function _onAddedToStage(event:Event):Void
   {
-    this.stage.scaleMode = StageScaleMode.EXACT_FIT; 
+    this.stage.scaleMode = StageScaleMode.EXACT_FIT;
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
     this.stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
     this._game_state_manager.changeGameState(new MenuState());

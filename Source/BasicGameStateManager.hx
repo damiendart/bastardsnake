@@ -13,7 +13,7 @@ class BasicGameStateManager implements IDrawable implements IGameStateManager
 
   public function changeGameState(game_state:IGameState):Void
   {
-    if (this._current_game_state != null && 
+    if (this._current_game_state != null &&
         Std.is(this._current_game_state, IDrawable)) {
       this._display_object.removeChild(
           cast(this._current_game_state, IDrawable).getDisplayObject());

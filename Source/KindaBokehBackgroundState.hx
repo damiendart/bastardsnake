@@ -5,12 +5,12 @@ import flash.display.Sprite;
 import flash.events.Event;
 
 
-typedef Ball = { current_position:Point, dx:Float, dy:Float, opacity:Float, 
+typedef Ball = { current_position:Point, dx:Float, dy:Float, opacity:Float,
     previous_position: Point, radius:Float };
 typedef Point = { x:Float, y:Float };
 
 
-class KindaBokehBackgroundState implements IDrawable implements IGameState implements IUpdatable 
+class KindaBokehBackgroundState implements IDrawable implements IGameState implements IUpdatable
 {
   private var _background_colour:Int;
   private var _balls:Array<Ball>;
@@ -26,8 +26,8 @@ class KindaBokehBackgroundState implements IDrawable implements IGameState imple
       this._display_object.stage.stageWidth, this._display_object.stage.stageHeight);
     for(ball in this._balls) {
       this._display_object.graphics.beginFill(_foreground_colour, ball.opacity);
-      this._display_object.graphics.drawCircle((ball.current_position.x * alpha) + 
-          (ball.previous_position.x  * (1.0 - alpha)), (ball.current_position.y * alpha) + 
+      this._display_object.graphics.drawCircle((ball.current_position.x * alpha) +
+          (ball.previous_position.x  * (1.0 - alpha)), (ball.current_position.y * alpha) +
           (ball.previous_position.y * (1.0 - alpha)), ball.radius);
     }
   }
@@ -69,8 +69,8 @@ class KindaBokehBackgroundState implements IDrawable implements IGameState imple
       var x, y;
       x = Std.random(this._display_object.stage.stageWidth);
       y = Std.random(this._display_object.stage.stageHeight);
-      this._balls.push({ current_position: { x: x, y: y }, dx: Std.random(300) + 600, 
-          dy: 0, opacity: Std.random(100) / 100, previous_position: { x: x, y: y }, 
+      this._balls.push({ current_position: { x: x, y: y }, dx: Std.random(300) + 600,
+          dy: 0, opacity: Std.random(100) / 100, previous_position: { x: x, y: y },
           radius: Std.random(30) + 15});
     }
   }
