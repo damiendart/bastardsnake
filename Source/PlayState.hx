@@ -161,12 +161,12 @@ class PlayState implements IDrawable implements IGameState
           if (Std.random(2) == 1) {
             this._snake.reversed_controls = !this._snake.reversed_controls;
             this._snake.has_reversed = true;
-          }
-          if (this._snake.reversed_controls) {
-            this._background_manager.changeGameState(
-                new KindaBokehBackgroundState(0x000000, 0x009900));
-          } else { 
-            this._background_manager.changeGameState(new BasicBackgroundState(0x009900));
+            if (this._snake.reversed_controls) {
+              this._background_manager.changeGameState(
+            new KindaBokehBackgroundState(0x000000, 0x009900));
+            } else { 
+              this._background_manager.changeGameState(new BasicBackgroundState(0x009900));
+            }
           }
           this._placeFruit();
         } else {
