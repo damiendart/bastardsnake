@@ -2,6 +2,7 @@ package;
 
 
 import flash.display.Sprite;
+import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.Lib.getTimer;
@@ -26,12 +27,7 @@ class Main extends Sprite
   // ensure that the Stage object is accessible before using it.
   private function _onAddedToStage(event:Event):Void
   {
-    // HACK: In ActionScript/Flash, the stage can be centered by setting
-    // the "Stage.align" property to an empty string.
-    // TODO: Check if this hack works in other targets.
-    #if flash
-      untyped this.stage.align = "";
-    #end
+    this.stage.scaleMode = StageScaleMode.EXACT_FIT; 
     this.addEventListener(Event.ENTER_FRAME, this._onEnterFrame);
     this.stage.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
     this._game_state_manager.changeGameState(new MenuState());
