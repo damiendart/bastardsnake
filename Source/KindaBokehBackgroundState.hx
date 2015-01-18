@@ -45,7 +45,7 @@ class KindaBokehBackgroundState implements IDrawable implements IGameState imple
       var x, y;
       x = Std.random(800);
       y = Std.random(600);
-      this._balls.push({ current_position: { x: x, y: y }, dx: Std.random(300) + 100, 
+      this._balls.push({ current_position: { x: x, y: y }, dx: Std.random(300) + 600, 
           dy: 0, opacity: Std.random(100) / 100, previous_position: { x: x, y: y }, 
           radius: Std.random(30) + 15});
     }
