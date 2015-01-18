@@ -7,6 +7,7 @@ import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFieldAutoSize;
 import flash.ui.Keyboard;
+import openfl.Assets;
 
 
 enum SnakeDirection { UP; RIGHT; DOWN; LEFT; }
@@ -37,6 +38,11 @@ class PlayState implements IDrawable implements IGameState
           (this._snake.reversed_controls ? 0x000000 : 0xffffff): 0xff0000);
     }
     this._drawCell(this._fruit, 0xffffff);
+    this._hud_text.text = "Score: " + (this._snake.parts.length - 2);
+    if (this._snake.has_reversed) {
+      this._hud_text.text += "\nControls: " +
+          (this._snake.reversed_controls ? "REVERSED" : "NORMAL");
+    }
   }
 
   public function getDisplayObject():Sprite
@@ -119,7 +125,7 @@ class PlayState implements IDrawable implements IGameState
   public function update(dt:Int):Void
   {
     this._background_manager.update(dt);
-    if (this._snake.is_alive == true) {
+    if (this._snake.is_alive) {
       var next_move = (this._snake.parts.length < 12) ?
           (100 - this._snake.parts.length * 5) : 40;
       this._snake.accumulated_time += dt;
@@ -151,16 +157,10 @@ class PlayState implements IDrawable implements IGameState
             break;
           }
         }
-        if ((snake_head.x == this._fruit.x) &&
-            (snake_head.y == this._fruit.y)) {
+        if ((snake_head.x == this._fruit.x) && (snake_head.y == this._fruit.y)) {
           if (Std.random(2) == 1) {
             this._snake.reversed_controls = !this._snake.reversed_controls;
             this._snake.has_reversed = true;
-          }
-          this._hud_text.text = "SCORE: " + (this._snake.parts.length - 2);
-          if (this._snake.has_reversed) {
-            this._hud_text.text += "\nControls: " +
-                (this._snake.reversed_controls ? "REVERSED" : "NORMAL");
           }
           this._placeFruit();
         } else {
@@ -198,19 +198,17 @@ class PlayState implements IDrawable implements IGameState
   {
     this._arena = { height: 24, width: 32 };
     this._snake = { accumulated_time: 0, is_alive: true, has_reversed: false,
-        direction: SnakeDirection.DOWN,
-        parts: [{ x: 2, y: 2 }, { x: 2, y: 3 }],
+        direction: SnakeDirection.DOWN, parts: [{ x: 2, y: 2 }, { x: 2, y: 3 }],
         reversed_controls: false };
-    this._background_manager.changeGameState(
-        new BasicBackgroundState(0x009900));
-    this._main_display_object.addChild(
-        this._background_manager.getDisplayObject());
+    this._background_manager.changeGameState(new BasicBackgroundState(0x009900));
+    this._main_display_object.addChild(this._background_manager.getDisplayObject());
     this._main_display_object.addChild(this._game_display_object);
     this._hud_text = new TextField();
     this._hud_text.autoSize = TextFieldAutoSize.LEFT;
-    this._hud_text.defaultTextFormat = new TextFormat("Courier", 18, 0xffffff);
+    this._hud_text.defaultTextFormat = new
+        TextFormat(Assets.getFont("assets/04B_03__.TTF").fontName, 24, 0xffffff);
+    this._hud_text.embedFonts = true;
     this._hud_text.selectable = false;
-    this._hud_text.text = "SCORE: 0";
     this._hud_text.x = 10;
     this._hud_text.y = 10;
     this._main_display_object.addChild(this._hud_text);
