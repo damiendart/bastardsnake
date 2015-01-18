@@ -2,6 +2,7 @@ package;
 
 
 import flash.display.Sprite;
+import flash.events.Event;
 
 
 typedef Ball = { current_position:Point, dx:Float, dy:Float, opacity:Float, 
@@ -21,7 +22,8 @@ class KindaBokehBackgroundState implements IDrawable implements IGameState imple
   {
     this._display_object.graphics.clear();
     this._display_object.graphics.beginFill(this._background_colour);
-    this._display_object.graphics.drawRect(0, 0, 800, 600);
+    this._display_object.graphics.drawRect(0, 0,
+      this._display_object.stage.stageWidth, this._display_object.stage.stageHeight);
     for(ball in this._balls) {
       this._display_object.graphics.beginFill(_foreground_colour, ball.opacity);
       this._display_object.graphics.drawCircle((ball.current_position.x * alpha) + 
@@ -41,14 +43,7 @@ class KindaBokehBackgroundState implements IDrawable implements IGameState imple
     this._foreground_colour = foreground_colour;
     this._display_object = new Sprite();
     this._balls = new Array<Ball>();
-    for(i in 1...220) {
-      var x, y;
-      x = Std.random(800);
-      y = Std.random(600);
-      this._balls.push({ current_position: { x: x, y: y }, dx: Std.random(300) + 600, 
-          dy: 0, opacity: Std.random(100) / 100, previous_position: { x: x, y: y }, 
-          radius: Std.random(30) + 15});
-    }
+    this._display_object.addEventListener(Event.ADDED_TO_STAGE, this._onAddedToStage);
   }
 
   public function registerManager(manager:IGameStateManager):Void
@@ -61,10 +56,22 @@ class KindaBokehBackgroundState implements IDrawable implements IGameState imple
     for(ball in this._balls) {
       ball.previous_position = ball.current_position;
       ball.current_position.x += ball.dx * (dt / 1000.0);
-      if (ball.current_position.x > 800 + ball.radius) {
-        ball.current_position.x -= 800 + (ball.radius * 2);
+      if (ball.current_position.x > this._display_object.stage.stageWidth + ball.radius) {
+        ball.current_position.x -= this._display_object.stage.stageWidth + (ball.radius * 2);
       }
       ball.current_position.y += ball.dy * (dt / 1000.0);
+    }
+  }
+
+  private function _onAddedToStage(event:Event):Void
+  {
+    for(i in 1...220) {
+      var x, y;
+      x = Std.random(this._display_object.stage.stageWidth);
+      y = Std.random(this._display_object.stage.stageHeight);
+      this._balls.push({ current_position: { x: x, y: y }, dx: Std.random(300) + 600, 
+          dy: 0, opacity: Std.random(100) / 100, previous_position: { x: x, y: y }, 
+          radius: Std.random(30) + 15});
     }
   }
 }
