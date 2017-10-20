@@ -13,5 +13,5 @@
   <icon path="Assets/openfl.svg"/>
   <meta name="Bastard Snake" package="net.robotinaponcho.bastardsnake" version="0.1.0"/>
   <source path="Source"/>
-  <window height="600" width="800" background="#000000" fps="30"/>
+  <window height="600" width="800" background="#000000" fps="60"/>
 </project>
